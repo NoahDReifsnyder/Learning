@@ -1,7 +1,56 @@
 import random
 
 
-teams = ["R", "B"]
+class Player:
+    teams = ["R", "B"]
+
+    def __init__(self, pl, game):
+        if pl not in self.teams:
+            raise Exception('invalid player')
+        self.self = pl
+        if game == 0:
+            self.takeMove = self._takeMoveTic
+        elif game == 1:
+            self.takeMove = self._takeMoveCheck
+
+    def _takeMoveTic(self, space):
+        pass
+
+    def _takeMoveCheck(self, space_from, space_to):
+        pass
+
+
+class TicGrid:
+    win_conditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+    def __init__(self):
+        self.grid = []
+        for i in range(9):
+            self.grid.append('-')
+
+    def __str__(self):
+        retval = ""
+        for i in range(3):
+            for j in range(3):
+                retval += self.grid[j+3*i] + " "
+            retval += "\n"
+        return retval
+
+    def getReward(self, player):
+        winner = None
+        for win in self.win_conditions:
+            temp = None
+            for space in win:
+                owned = self.grid[space]
+                if owned == '-':
+                    temp = None
+                    break
+                if not temp:
+                    temp = owned
+            if temp:
+                winner = temp
+                break
+        print(winner)
+
 
 
 class Board:
@@ -40,7 +89,7 @@ class Board:
 
 
 
-def main():
+def random_walk():
     states_prime = {"0": 0, "A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "1": 0}
     actions = {"A": {"0": .5, "B": .5}, "B": {"A": .5, "C": .5}, "C": {"B": .5, "D": .5}, "D": {"C": .5, "E": .5}, "E": {"D": .5, "1": .5}}
     rewards = {"0": 0, "A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "1": 1}
@@ -73,7 +122,12 @@ def weighted_random_by_dct(dct):
     assert False, 'unreachable'
 
 
-main()
+def tic_tac_toe():
+    t = TicGrid()
+    p = Player("B", 0)
+
+
+tic_tac_toe()
 
 
 
